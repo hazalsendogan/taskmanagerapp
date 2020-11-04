@@ -20,7 +20,7 @@ class Bar extends Component {
   render() {
     const { classes, className } = this.props;
     return (
-      <AppBar position="static" className={className}>
+      <AppBar position="fixed" className={className}>
         <Toolbar>
           <IconButton
             color="inherit"

@@ -7,6 +7,7 @@ import AddTask from "../pages/tasks/AddTask";
 import Tasks from "../pages/tasks/Tasks";
 import { withStyles, CssBaseline } from "@material-ui/core";
 const drawerWidth = 240;
+const appBarHeight = 64;
 
 const useStyles = (theme) => ({
   root: {
@@ -15,8 +16,8 @@ const useStyles = (theme) => ({
   },
   appBar: {
     [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+      width: '100%',
+      maxHeight: appBarHeight
     },
   },
   drawer: {
@@ -24,6 +25,19 @@ const useStyles = (theme) => ({
       width: drawerWidth,
     },
   },
+  content: {
+    marginTop: appBarHeight,
+    marginLeft: 15,
+    marginRight: 15,
+    [theme.breakpoints.up("sm")]: {
+      marginTop: appBarHeight + (appBarHeight * 1 / 4),
+      marginLeft: drawerWidth + (drawerWidth * 1/12)
+    },
+    [theme.breakpoints.up("md")]: {
+      marginTop: appBarHeight + (appBarHeight * 1 / 4),
+      marginLeft: drawerWidth + drawerWidth * 1 / 12
+    },
+  }
 });
 
 class App extends Component {
@@ -31,11 +45,6 @@ class App extends Component {
     super(props);
     this.state = {
       mobileOpen: false,
-      drawerListItems: [
-        {id:1,name: 'Dashboard', to: '/'},
-        {id:2,name: 'My Tasks', to: '/mytasks'},
-        {id:3,name: 'Add Tasks', to: '/addtask'}
-      ]
     };
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
   }
@@ -46,6 +55,7 @@ class App extends Component {
       mobileOpen: !mobileOpen,
     };
   };
+
   render() {
     const { classes } = this.props;
     const { mobileOpen,drawerListItems } = this.state;
@@ -63,10 +73,17 @@ class App extends Component {
           className={classes.drawer}
         />
         <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/mytasks" component={Tasks} />
-          <Route exact path="/addtask" component={AddTask} />
+          <Route exact path="/" render={(props) => (
+            <Dashboard {...props} className={classes.content}/>
+          )}/>
+          <Route exact path="/mytasks" render={(props) => (
+            <Tasks {...props} className={classes.content}/>
+          )}/>
+          <Route exact path="/addtask" render={(props) => (
+            <AddTask {...props} className={classes.content}/>
+          )} />
         </Switch>
+
       </div>
     );
   }

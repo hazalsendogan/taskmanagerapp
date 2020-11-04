@@ -11,31 +11,47 @@ import MailIcon from "@material-ui/icons/Mail";
 import { Link, withStyles } from "@material-ui/core";
 
 const drawerWidth = 240;
+const appBarHeight = 64;
 
 const useStyles = (theme) => ({
   drawerPaper: {
     width: drawerWidth,
+    marginTop: appBarHeight
   },
   toolbar: theme.mixins.toolbar,
 });
 
 class Sidenav extends Component {
+  state = {
+    drawerListItems: []
+  }
+
+  componentDidMount() {
+    this.getDrawerList();
+  }
+
+  getDrawerList =  () => {
+
+    let url = "http://localhost:3000/drawerListItems";
+
+    fetch(url).then(response => response.json()).then(data => this.setState({drawerListItems:data}))
+
+  }
   render() {
-    const { classes, drawerListItems } = this.props;
+    const { classes} = this.props;
+    const {drawerListItems} = this.state;
     const drawer = (
       <div>
-        <div className={classes.toolbar} />
-        <Divider />
         <List>
           {drawerListItems.map((item, index) => (
-            <ListItem button key={item.id}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <Link href={item.to}>
+            <Link href={item.to} key={item.id}>
+              <ListItem button>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
                 <ListItemText primary={item.name} />
-              </Link>
-            </ListItem>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </div>
