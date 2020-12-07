@@ -12,10 +12,13 @@ import {
 } from "@material-ui/core";
 
 const customStyles = (theme) => ({
+  root: {
+    paddingTop: 50,
+  },
   pageHeading: {
-    marginBottom: 20
-  }
-})
+    marginBottom: 20,
+  },
+});
 
 class Tasks extends Component {
   state = {
@@ -34,11 +37,13 @@ class Tasks extends Component {
       .then((data) => this.setState({ tasks: data }));
   };
   render() {
-    const { className, classes } = this.props;
+    const { classes } = this.props;
     const { tasks } = this.state;
     return (
-      <main className={className}>
-        <Typography variant="h4" className={classes.pageHeading} >My Tasks</Typography>
+      <main className={classes.root}>
+        <Typography variant="h4" className={classes.pageHeading}>
+          My Tasks
+        </Typography>
         <Grid container spacing={2}>
           {tasks.map((task) => (
             <Grid item xs={12} sm={12} md={6} lg={4} key={task.id}>
@@ -100,7 +105,7 @@ class Tasks extends Component {
                 </CardActionArea>
                 <CardActions>
                   <Button size="small" color="primary">
-                    See Details 
+                    See Details
                   </Button>
                 </CardActions>
               </Card>

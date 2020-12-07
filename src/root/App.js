@@ -5,88 +5,60 @@ import Sidenav from "../components/sidenav/Sidenav";
 import Dashboard from "../pages/home/Dashboard";
 import AddTask from "../pages/tasks/AddTask";
 import Tasks from "../pages/tasks/Tasks";
-import { withStyles, CssBaseline } from "@material-ui/core";
-const drawerWidth = 240;
-const appBarHeight = 64;
-
-const useStyles = (theme) => ({
-  root: {
-    display: "flex",
-    flexFlow: "row wrap",
-  },
-  appBar: {
-    [theme.breakpoints.up("sm")]: {
-      width: '100%',
-      maxHeight: appBarHeight
-    },
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-    },
-  },
-  content: {
-    marginTop: appBarHeight,
-    marginLeft: 15,
-    marginRight: 15,
-    [theme.breakpoints.up("sm")]: {
-      marginTop: appBarHeight + (appBarHeight * 1 / 4),
-      marginLeft: drawerWidth + (drawerWidth * 1/12)
-    },
-    [theme.breakpoints.up("md")]: {
-      marginTop: appBarHeight + (appBarHeight * 1 / 4),
-      marginLeft: drawerWidth + drawerWidth * 1 / 12
-    },
-  }
-});
+import { Container, CssBaseline, Grid } from "@material-ui/core";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mobileOpen: false,
-    };
-    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-  }
-
-  handleDrawerToggle = () => {
-    let mobileOpen = this.state.mobileOpen;
-    this.setState = {
-      mobileOpen: !mobileOpen,
-    };
+  state = {
+    drawerListItems: [],
   };
 
-  render() {
-    const { classes } = this.props;
-    const { mobileOpen,drawerListItems } = this.state;
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <Bar
-          className={classes.appBar}
-        
-        />
-        <Sidenav
-          handleDrawerToggle={this.handleDrawerToggle}
-          drawerListItems={drawerListItems}
-          mobileOpen={mobileOpen}
-          className={classes.drawer}
-        />
-        <Switch>
-          <Route exact path="/" render={(props) => (
-            <Dashboard {...props} className={classes.content}/>
-          )}/>
-          <Route exact path="/mytasks" render={(props) => (
-            <Tasks {...props} className={classes.content}/>
-          )}/>
-          <Route exact path="/addtask" render={(props) => (
-            <AddTask {...props} className={classes.content}/>
-          )} />
-        </Switch>
+  componentDidMount() {
+    this.getDrawerList();
+  }
 
-      </div>
+  getDrawerList = () => {
+    let url = "http://localhost:3000/drawerListItems";
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => this.setState({ drawerListItems: data }));
+  };
+  render() {
+    const { drawerListItems } = this.state;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+
+        <Bar />
+        <Container maxWidth={false}>
+          <Grid container spacing={2}>
+            <Grid item md={2}>
+              <Sidenav drawerListItems={drawerListItems} />
+            </Grid>
+            <Grid item md={10}>
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={(props) => <Dashboard {...props} />}
+                />
+                <Route
+                  exact
+                  path="/mytasks"
+                  render={(props) => <Tasks {...props} />}
+                />
+                <Route
+                  exact
+                  path="/addtask"
+                  render={(props) => <AddTask {...props} />}
+                />
+              </Switch>
+            </Grid>
+          </Grid>
+        </Container>
+      </React.Fragment>
     );
   }
 }
 
-export default withStyles(useStyles)(App);
+export default App;

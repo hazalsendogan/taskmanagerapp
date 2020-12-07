@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React, { Component } from 'react'
 
 export default class Dashboard extends Component {
@@ -6,7 +7,7 @@ export default class Dashboard extends Component {
         const {className} = this.props;
         return (
             <main className={className}>
-                <h2>Dashboard</h2>
+                <Typography variant="h2">Welcome to app</Typography>
             </main>
         )
     }

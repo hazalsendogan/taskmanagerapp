@@ -1,8 +1,8 @@
 {
     "drawerListItems": [
-        {"id":1,"name" :"Dashboard", "to": "/"},
-        {"id":2,"name": "My Tasks", "to": "/mytasks"},
-        {"id":3,"name": "Add Tasks","to":"/addtask"}
+        {"id":1,"name" :"Dashboard", "to": "/","allyPropsVal": 0},
+        {"id":2,"name": "My Tasks", "to": "/mytasks","allyPropsVal": 1},
+        {"id":3,"name": "Add Tasks","to":"/addtask","allyPropsVal": 2}
     ],
     "tasks": [
         {
